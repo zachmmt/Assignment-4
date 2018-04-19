@@ -59,13 +59,19 @@ public class DynamicChangeMakerTest {
         assertEquals(expectedResult, result);
     }
     
-    @Test(expected = IllegalArgumentException.class)  public void emptyDenom() throws IllegalArgumentException{
-        DynamicChangeMaker instance = new DynamicChangeMaker();
-        
-        int [] denom = {};
-        
-        instance.makeChange(denom, 42);
-        
-    }
+    //@Test(expected = IllegalArgumentException.class)  public void emptyDenom() throws IllegalArgumentException{
+    //    DynamicChangeMaker instance = new DynamicChangeMaker();
+    //    
+    //    int [] denom = {};
+    //    
+     //   instance.makeChange(denom, 42);
+    //    
+    //}
+    
+        @Test(expected = IllegalArgumentException.class)  public void emptyDenom() {
+    DynamicChangeMaker instance = new DynamicChangeMaker();
+    int [] denom = {1};
+    instance.makeChange(denom, 42);
+}
     
 }
