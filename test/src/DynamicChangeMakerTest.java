@@ -3,11 +3,12 @@
  * Date: 4/24/18
  * Overview:    This project tests a class, DynamicChangeMaker.java
  *              that solves the least change problem through
- *              dynamic programming. DynamicChangeMaker.java's only
+ *              dynamic programming. DynamicChangeMaker.java's most important
  *              method is makeChange(), which takes as parameters
  *              an integer array of coin denominations and an integer
- *              amount of change due. It returns a String that is
- *              a list of the coins to be given back.
+ *              amount of change due. It returns an integer that is
+ *              the input for another method, calculateCoins. This method
+ *              returns a list of the coins by value to be given back.
  */
 
 package src;
@@ -50,7 +51,7 @@ public class DynamicChangeMakerTest {
     public void denomsOutOfOrder() {
         DynamicChangeMaker instance = new DynamicChangeMaker();
         
-        int [] denoms = {};
+        int [] denoms = {10, 1, 5};
         int changeDue = 0;
         
         String result = instance.makeChange(denoms, changeDue);
@@ -59,19 +60,10 @@ public class DynamicChangeMakerTest {
         assertEquals(expectedResult, result);
     }
     
-    //@Test(expected = IllegalArgumentException.class)  public void emptyDenom() throws IllegalArgumentException{
-    //    DynamicChangeMaker instance = new DynamicChangeMaker();
-    //    
-    //    int [] denom = {};
-    //    
-     //   instance.makeChange(denom, 42);
-    //    
-    //}
-    
-        @Test(expected = IllegalArgumentException.class)  public void emptyDenom() {
-    DynamicChangeMaker instance = new DynamicChangeMaker();
-    int [] denom = {1};
-    instance.makeChange(denom, 42);
-}
+    @Test(expected = IllegalArgumentException.class)  public void emptyDenom() {
+        DynamicChangeMaker instance = new DynamicChangeMaker();
+        int [] denom = {};
+        instance.makeChange(denom, 42);
+    }
     
 }
