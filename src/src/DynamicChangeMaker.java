@@ -18,10 +18,13 @@ import java.util.Arrays;
 
 public class DynamicChangeMaker {
     private ArrayList<Integer> coinNumArr;
+    private ArrayList<Integer> coinBreakdown;
     private int [] savedDenoms;
     private int highestCoinNum;
     
     public DynamicChangeMaker(){
+        coinBreakdown = new ArrayList();
+        coinBreakdown.add(0);
         coinNumArr = new ArrayList();
         coinNumArr.add(0);
         highestCoinNum = 0;
@@ -51,7 +54,7 @@ public class DynamicChangeMaker {
         //Setup reduction array
         int reduce[] = new int [denoms.length];
         int newAmt;
-        
+        int denomIndex = 0;
         //Check if we already know the answer
         if(highestCoinNum >= changeDue){ //Already calculated and stored
             return this.calculateCoins(coinNumArr.get(changeDue), changeDue);
@@ -73,26 +76,59 @@ public class DynamicChangeMaker {
                 for(int i=0; i<denoms.length; i++){
                     if(reduce[i] < newAmt){
                         newAmt = reduce[i];
+                        denomIndex = i;
                     }
                 }
-                
+        
+                coinBreakdown.add(highestCoinNum+1, denoms[denomIndex]);
                 //Update array list and note new upper bound
                 coinNumArr.add(highestCoinNum+1, newAmt);
                 highestCoinNum++;
 //                System.out.println("            c: " + highestCoinNum + "; C[c]: " + coinNumArr.get(highestCoinNum));
                 
             }
-//            System.out.println();
-//            System.out.println();
-//            this.printCArray();
+            //System.out.println();
+            //System.out.println();
+            //this.printCArray();
             return this.calculateCoins(coinNumArr.get(changeDue), changeDue);
         }
     }
     
     private String calculateCoins(int amtCoins, int changeDue){
+        String output = "";
+        int[] coinarray = new int[amtCoins];
+        int temp;
+        int counter;
         
+        //generate coin array
+        for(int i = 0; i < amtCoins; i++){
+            coinarray[i] = coinBreakdown.get(changeDue);
+            changeDue = changeDue - coinBreakdown.get(changeDue);
+        }
         
-        return "" + amtCoins;
+        //sort coin array
+        for(int i = 0; i < amtCoins; i++){
+            temp   = Integer.MAX_VALUE;
+            counter = 0;
+            for(int j = i; j < amtCoins; j++){
+                if(coinarray[j] <= temp){
+                    temp = coinarray[j];
+                    counter=j;
+                }
+            }
+            coinarray[counter] = coinarray[i];
+            coinarray[i] = temp;
+        }
+        
+        //generate output in correct format (Greatest to least)
+        for(int i = amtCoins-1; i > -1; i--){
+            output = output + coinarray[i];
+            if(i > 0){
+                output = output + ", ";
+            }
+        }
+        
+        return "" + output;
     }
     
     private void printCArray(){
